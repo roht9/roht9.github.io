@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>省スペースのための自炊</title>
+
+		<meta name="description" content="電子書籍化">
+		<meta name="author" content="@roht9">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="reveal.js/css/theme/beige.css" id="theme">
+		<!--
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+		-->
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /reveal.js/print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="reveal.js/lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown><script type="text/template">
+					## 省スペースのための自炊
+					2015/01/10  
+					@roht9
+				</script></section>
+				<section data-markdown><script type="text/template">
+				  ### 経緯
+
+3年前の本棚(以下のように比較的空きがあった)
+![](./bookshelf.png)
+
+-> 野放図に本を買っていたら本棚がパンク、
+対策として電子化を検討
+(現在の本棚はまだ見苦しいので載せられません）
+
+				</script></section>
+				<section data-markdown><script type="text/template">
+				  ### 電子書籍化状況
+
+| 冊数 | ファイルサイズ合計 | ジャンル|
+|------|--------------------|---------|
+|413|11GB|漫画|
+|29|1.2GB|技術書|
+|12|0.26GB|レシピ|
+|34|0.78GB|その他（新書等）|
+
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+				  ### 電子書籍化状況
+```bash
+th$ pwd
+/Users/th/Dropbox/Book
+th$ find . -type f -name "*pdf" | awk -F"/" '{print $2}' | sort | uniq -c
+ 413 Comic
+  29 Dev
+  34 Other
+  12 Recipe
+
+th$ find . -maxdepth 1 -type d | grep -v "^.$" | xargs du -sh
+  11G ./Comic
+ 1.2G ./Dev
+ 781M ./Other
+ 267M ./Recipe
+```
+				</script></section>
+				<section data-markdown><script type="text/template">
+### 電子書籍のメリット
+
+* 省スペース
+* 検索性
+* 劣化しない
+
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+### 電子書籍のデメリット
+
+* 人に貸せない
+* 自炊に手間がかかる
+* 読書に端末が必要
+* 要バックアップ
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					### 自炊の流れ
+					1. 裁断
+					1. スキャン
+					1. 視聴環境へのファイル追加
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					### 自炊の流れ
+					1. **裁断 <-- ★**
+					1. スキャン
+					1. 視聴環境へのファイル追加
+				</script></section>
+
+				<!--
+				<section data-markdown><script type="text/template">
+				</script></section>
+				-->
+
+				<section data-markdown><script type="text/template">
+					### 裁断
+					
+					本の背表紙を切断する作業。 最初は抵抗があったが慣れる。
+					カッター等でも可能だが、裁断機を買ったほうが良い。
+					(1万円程度のもので十分）
+
+					* 作業時間は漫画本1冊当たり5分程度
+					* 一冊50円程度で外部委託可能
+					 * 50冊を超えるなら裁断は外部委託している
+
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					### 自炊の流れ
+					1. 裁断
+					1. **スキャン <-- ★**
+					1. 視聴環境へのファイル追加
+				</script></section>
+				<section data-markdown><script type="text/template">
+					### スキャン
+
+					* ドキュメントスキャナ(ScanSnap等)は必須
+					 * 3万円〜4万円程度
+					* スキャンについては外部委託は不可
+					 * 違法となる可能性が高い
+					* [TIPS]カラー/モノクロ混在の書籍
+
+				</script></section>
+				<section data-markdown><script type="text/template">
+					### スキャン - カラー/モノクロ混在の原稿
+
+					 ScanSnapの機能で自動判別が可能だが誤判定有り
+
+					 1.  手動でカラー、モノクロの原稿毎に設定を切り替えて取り込み
+
+					 ```
+					   book-01.pdf(カラー)
+						 book-02.pdf(モノクロ)
+					```
+
+					 1.  スクリプトで結合 
+
+					 ```
+					 	 book.pdf(カラー/モノクロ混合)
+					```
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					### 自炊の流れ
+					1. 裁断
+					1. スキャン
+					1. ** 視聴環境へのファイル追加 <-- ★**
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					### 視聴環境へのファイル追加
+					
+					* タブレット
+					* スマートフォン(Android)
+					* スマートフォン(iOS)
+					* PC
+
+					↑でそれぞれで見れるようにしたい。
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					### 視聴環境へのファイル追加 - ボツ構成
+
+					![](./nas.png)
+
+
+				</script></section>
+				<section data-markdown><script type="text/template">
+					### 視聴環境へのファイル追加 - ボツ構成
+
+					一つの場所にまとめてファイルをおいて、  
+					必要な時に参照すればよいのでは？  
+					という考えで対応したが、  二つの問題点があった。
+
+					1. 複数の端末へのファイルコピーが面倒
+					1. PDFは一冊200MB程度となっており、端末の容量が足りない
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					### 視聴環境へのファイル追加 - Dropbox
+
+					![](./dropbox.png)
+
+				</script></section>
+				<section data-markdown><script type="text/template">
+					### 視聴環境へのファイル追加 - Dropbox
+
+					* 圧縮したPDFファイルをDropboxにアップロード(一冊あたり20MB程度になった）
+					* Dropboxにアップロード
+					 * PCの場合、Dropboxに上げれば自動でダウンロードされる
+					 * Androidの場合はDropsyncを使って自動ダウンロード
+					 * iOSの場合は自動ダウンロードできず（手動でのダウンロードとなる。現状の課題）
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					### まとめ
+
+					自炊は非常に面倒ではありますが、
+					蔵書を低コストで維持する手段としては非常に効果的
+
+					定形作業については自動化する
+					他の端末との連携にはDropbox等の広く利用されている（＝対応アプリも多い)サービスを利用する
+
+					ことで比較的快適な環境を構築できました。
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					### 参考:使っているビューワー
+
+					* Android
+					 * CommitN
+					* iOS
+					 * ComicGlass
+
+				</script></section>
+				<!--
+				<section data-markdown><script type="text/template">
+				</script></section>
+				-->
+			</div>
+
+		</div>
+
+		<script src="reveal.js/lib/js/head.min.js"></script>
+		<script src="reveal.js/js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+					{ src: 'reveal.js/plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
